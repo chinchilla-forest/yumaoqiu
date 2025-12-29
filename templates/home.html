@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>{{ year }} 年接龙</h3>
+    {% if user %}
+    <form class="d-flex" action="{{ url_for('create_event') }}" method="post">
+        <input class="form-control me-2" type="date" name="date" required>
+        <button class="btn btn-primary" type="submit">发起接龙</button>
+    </form>
+    {% else %}
+    <a class="btn btn-primary" href="{{ url_for('login') }}">登录后发起接龙</a>
+    {% endif %}
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">接龙列表</div>
+            <ul class="list-group list-group-flush">
+                {% if events %}
+                    {% for event in events %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ event.date.strftime('%Y-%m-%d') }}</strong>
+                                <small class="text-muted ms-2">发起人：{{ event.creator.phone }}</small>
+                            </div>
+                            <div>
+                                <span class="badge bg-info text-dark me-2">{{ event.participants|length }} 人</span>
+                                {% if user %}
+                                    <form class="d-inline" action="{{ url_for('join_event', event_id=event.id) }}" method="post">
+                                        <button class="btn btn-sm btn-outline-success" type="submit">加入</button>
+                                    </form>
+                                {% else %}
+                                    <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('login') }}">登录加入</a>
+                                {% endif %}
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="list-group-item">今年还没有接龙，快来发起吧！</li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">年度参与统计</div>
+            <ul class="list-group list-group-flush">
+                {% if stats %}
+                    {% for phone, count in stats %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ phone }}
+                            <span class="badge bg-primary rounded-pill">{{ count }} 次</span>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="list-group-item">暂无参与数据</li>
+                {% endif %}
+            </ul>
+            <div class="card-body">
+                <a class="btn btn-outline-primary w-100" href="{{ url_for('stats') }}">更多统计</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

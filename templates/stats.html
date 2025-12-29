@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>{{ stats_title }}</h3>
+    <div>
+        <a class="btn btn-outline-primary {% if view == 'year' %}active{% endif %}" href="{{ url_for('stats', view='year') }}">年度</a>
+        <a class="btn btn-outline-primary {% if view == 'month' %}active{% endif %}" href="{{ url_for('stats', view='month') }}">本月</a>
+    </div>
+</div>
+<div class="card">
+    <ul class="list-group list-group-flush">
+        {% if stats %}
+            {% for phone, count in stats %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ phone }}
+                    <span class="badge bg-success rounded-pill">{{ count }} 次</span>
+                </li>
+            {% endfor %}
+        {% else %}
+            <li class="list-group-item">暂无统计数据</li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}

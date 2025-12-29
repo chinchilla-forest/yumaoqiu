@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h3 class="mb-3">注册</h3>
+        <form method="post">
+            <div class="mb-3">
+                <label class="form-label">手机号</label>
+                <input type="text" name="phone" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">密码</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">注册</button>
+            <a class="btn btn-link" href="{{ url_for('login') }}">已有账号？登录</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
